@@ -1,0 +1,38 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider             = "prisma-client-py"
+  interface            = "asyncio"
+  recursive_type_depth = 5
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// Guilds thee bot is currently joined to or has recently been removed from
+model Guild {
+  guild_id BigInt @id
+
+  members Member[]
+}
+
+// Users the bot shares servers with (Global Data)
+model User {
+  user_id BigInt @id
+
+  member Member[]
+}
+
+// Users the bot shares servers with (Guild Data)
+model Member {
+  member_id BigInt
+  guild_id  BigInt
+
+  user  User  @relation(fields: [member_id], references: [user_id], onDelete: Cascade)
+  guild Guild @relation(fields: [guild_id], references: [guild_id], onDelete: Cascade)
+
+  @@id([member_id, guild_id])
+}
