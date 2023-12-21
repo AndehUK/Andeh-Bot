@@ -12,7 +12,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Guilds thee bot is currently joined to or has recently been removed from
+// Guilds the bot is currently joined to or has recently been removed from
 model Guild {
   guild_id BigInt @id
 
